@@ -1,1 +1,1 @@
-# Esto es una practica para hacer un meno en ncurses :/
+### Esto es una practica para hacer un menu en ncurses 
