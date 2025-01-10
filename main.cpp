@@ -5,6 +5,32 @@
 
 #define ALTO 15
 #define ANCHO 25
+#include <cstdlib>  // Para system()
+#include <ncurses.h> // Para endwin()
+
+void actua(int opcion) {
+    switch (opcion) {
+        case 0:
+            // algo
+            break;
+        case 1: {
+            const char* comando = "sshpass -p \"x\" ssh -o StrictHostKeyChecking=no x@192.168.3.81 "
+                                  "'echo x | sudo -S shutdown now'";
+            int resultado = system(comando);
+            if (resultado != 0) {
+                printw("Error al ejecutar el comando.\n");
+            }
+            break;
+        }
+        case 2:
+            endwin();
+            exit(0);
+            break;
+        default:
+            printw("Opción no válida.\n");
+            break;
+    }
+}
 
 int main()
 {
@@ -30,10 +56,10 @@ int main()
     // Opciones
     const char* opciones[] = {"Conectar", "Apagar", "Salir"};
 
-    // Menu
+    // Variables
     int opcion = 0;
-    bool fin = false;
     int tecla = 0;
+    bool fin = false;
 
     // Interaccion
     while (!fin) {
@@ -50,11 +76,12 @@ int main()
                     opcion = 2;
                 }
                 break;
-            case KEY_ENTER:
-                fin = true;
+            case 10:
+                actua(opcion);
                 break;
         }
 
+        // Imprime las opciones
         for (int i = 0; i < 3; i++) {
             if (i == opcion) {
                 wattron(win, A_REVERSE);
@@ -67,6 +94,7 @@ int main()
         wrefresh(win);
         tecla = getch();
     }
+
 
 // Finaliza ncurses
 endwin();
